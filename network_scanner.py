@@ -6,7 +6,7 @@ import argparse
 
 def get_arguments():
     parser = argparse.ArgumentParser()
-    parser.add_argument ("-t", "--target", dest="target", help="Target IP / IP range.")
+    parser.add_argument("-t", "--target", dest="target", help="Target IP / IP range.")
     options = parser.parse_args()
     return options
 
@@ -14,9 +14,9 @@ def get_arguments():
 def scan(ip):
     arp_request = scapy.ARP(pdst=ip)
     broadcast = scapy.Ether(dst="ff:ff:ff:ff:ff:ff")
-    arp_request_broadcast = broadcast/arp_request
-    answered_list = scapy.srp(arp_request_broadcast, timeout=1, verbose = False) [0]
-    #though answered and unanswered appear, this will select only the first indices or the answered.
+    arp_request_broadcast = broadcast / arp_request
+    answered_list = scapy.srp(arp_request_broadcast, timeout=1, verbose=False)[0]
+    # though answered and unanswered appear, this will select only the first indices or the answered.
 
     clients_list = []
     for element in answered_list:
@@ -28,13 +28,16 @@ def scan(ip):
 def print_result(results_list):
     print("IP\t\t\tMAC Address\n----------------------------------------------")
     for client in results_list:
-        print(client["ip"] + "\t\t" + client ["mac"] )
+        print(client["ip"] + "\t\t" + client["mac"])
 
     # srp is send and receive.
 
     # print(arp_request.summary()) to check for summary
-#scapy.ls() to search for which field to add to the object. that's where pdst was found.
+
+
+# scapy.ls() to search for which field to add to the object. that's where pdst was found.
 
 options = get_arguments()
 scan_result = scan(options.target)
 print_result(scan_result)
+# notes def out of some order due to cleaning up code.
